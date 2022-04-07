@@ -151,7 +151,6 @@ export default class Server {
         case EMessagePVERoom.CalculateQueue:
           console.log("GET A QUEUE");
           this.events.emit("notification", "GOT A QUEUE");
-          console.log(message);
 
           this.queue = message.turns;
           this.currIdx = message.index;
@@ -181,6 +180,7 @@ export default class Server {
         case EMessagePVERoom.EndGame:
           console.log("END GAME");
           this.events.emit("notification", "END GAME");
+          this.events.emit("end-game");
           break;
         case EMessagePVERoom.Error:
           console.log("ERROR CHOOSING ACTION");
@@ -256,6 +256,10 @@ export default class Server {
   }
   endRound(cb: () => void, context?: any) {
     this.events.on("end-round", cb, context);
+  }
+  endGame(cb: () => void, context?:any){
+    this.events.on("end-game", cb, context);
+
   }
 
   notification(cb: (alert: string) => void, context?: any) {
